@@ -95,11 +95,11 @@ their estimated PageRank value (a value between 0 and 1). All
 PageRank values should sum to 1.
 """
 def sample_pagerank(corpus, damping_factor, n) -> dict:
-    n_pages = {p: 0 for p in n_pages}
+    n_pages = {p: 0 for p in corpus}
 
-    page = random.choice(list(corpus.key()))
+    page = random.choice(list(corpus.keys()))
 
-    for page in range(n):
+    for i in range(n):
         n_pages[page] +=1
         probs = transition_model(corpus, page, damping_factor)
         next_page = random.choices(
@@ -110,7 +110,7 @@ def sample_pagerank(corpus, damping_factor, n) -> dict:
 
         page = next_page
     
-    return n_pages
+    return {p: n_pages[p] / n for p in n_pages}
 
 
 """
@@ -128,13 +128,18 @@ def iterate_pagerank(corpus, damping_factor):
     while True:
         new_page_rank = {}
         for page in corpus:
-            soma = sum(page_rank[i] / len(corpus[i]) for i in corpus if page in corpus[i])
+            soma = 0
+            for i in corpus:
+                if len(corpus[i]) == 0:  
+                    soma += page_rank[i] / len(corpus)
+                elif page in corpus[i]:
+                    soma += page_rank[i] / len(corpus[i])
             new_page_rank[page] = (1 - damping_factor) / len(corpus) + damping_factor * soma
 
         if all(abs(new_page_rank[p] - page_rank[p]) < 0.001 for p in corpus):
             break
 
-    page_rank = new_page_rank
+        page_rank = new_page_rank
 
     return page_rank
 
