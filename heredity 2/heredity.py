@@ -189,7 +189,7 @@ def joint_probability(people: dict, one_gene: set, two_genes: set, have_trait: s
 
     if (people[person]["mother"] is None 
         and people[person]["father"] is None):
-        prob *= PROBS["gene"]
+        prob *= PROBS["gene"][num_genes]
         prob *= PROBS["trait"][num_genes][has_trait]
     else:
         if mother in one_gene:
@@ -232,24 +232,50 @@ def joint_probability(people: dict, one_gene: set, two_genes: set, have_trait: s
     return prob
 
 
-
+"""
+Add to `probabilities` a new joint probability `p`.
+Each person should have their "gene" and "trait" distributions updated.
+Which value for each distribution is updated depends on whether
+the person is in `have_gene` and `have_trait`, respectively.
+"""
 def update(probabilities, one_gene, two_genes, have_trait, p):
-    """
-    Add to `probabilities` a new joint probability `p`.
-    Each person should have their "gene" and "trait" distributions updated.
-    Which value for each distribution is updated depends on whether
-    the person is in `have_gene` and `have_trait`, respectively.
-    """
-    raise NotImplementedError
+    for person in probabilities:
+        if person in one_gene:
+            num_genes = 1
+        elif person in two_genes:
+            num_genes = 2
+        else:
+            num_genes = 0
 
+        probabilities[person]["gene"][num_genes] += p
 
+        if person in have_trait:
+            has_trait = True
+        else:
+            has_trait = False
+
+        probabilities[person]["trait"][has_trait] += p
+    
+
+"""
+Update `probabilities` such that each probability distribution
+is normalized (i.e., sums to 1, with relative proportions the same).
+"""
 def normalize(probabilities):
-    """
-    Update `probabilities` such that each probability distribution
-    is normalized (i.e., sums to 1, with relative proportions the same).
-    """
-    raise NotImplementedError
+    for person in probabilities:
+        gene1 = probabilities[person]["gene"][0] / sum(probabilities[person]["gene"].values())
+        gene2 = probabilities[person]["gene"][1] / sum(probabilities[person]["gene"].values())
+        gene3 = probabilities[person]["gene"][2] / sum(probabilities[person]["gene"].values())
 
+        probabilities[person]["gene"][0] = gene1
+        probabilities[person]["gene"][1] = gene2
+        probabilities[person]["gene"][2] = gene3 
+
+        trait1 = probabilities[person]["trait"][True] / sum(probabilities[person]["trait"].values())
+        trait2 = probabilities[person]["trait"][False] / sum(probabilities[person]["trait"].values())
+ 
+        probabilities[person]["trait"][True] = trait1
+        probabilities[person]["trait"][False] = trait2
 
 if __name__ == "__main__":
     main()
