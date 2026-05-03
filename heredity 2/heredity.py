@@ -168,66 +168,66 @@ The probability returned should be the probability that
     * everyone not in set` have_trait` does not have the trait.
 """
 def joint_probability(people: dict, one_gene: set, two_genes: set, have_trait: set):
-   # Joint probability
-   prob = 1
+    # Joint probability
+    prob = 1
    
-   for person in people:
-    if person in one_gene:
-        num_genes = 1
-    elif person in two_genes:
-        num_genes = 2
-    else:
-        num_genes = 0
-
-    if person in have_trait:
-        has_trait = True
-    else:
-        has_trait = False
-
-    mother = people[person]["mother"]
-    father = people[person]["father"]
-
-    if (people[person]["mother"] is None 
-        and people[person]["father"] is None):
-        prob *= PROBS["gene"][num_genes]
-        prob *= PROBS["trait"][num_genes][has_trait]
-    else:
-        if mother in one_gene:
-            mum_gene = 1
-        elif mother in two_genes:
-            mum_gene = 2
+    for person in people:
+        if person in one_gene:
+            num_genes = 1
+        elif person in two_genes:
+            num_genes = 2
         else:
-            mum_gene = 0
+            num_genes = 0
 
-        if father in one_gene:
-            dad_gene = 1
-        elif father in two_genes:
-            dad_gene = 2
+        if person in have_trait:
+            has_trait = True
         else:
-            dad_gene = 0
-        
-        if mum_gene == 1:
-            mum_prob = 0.5
-        elif mum_gene == 2:
-            mum_prob = 1 - PROBS["mutation"]
-        else:
-            mum_prob = PROBS["mutation"]
+            has_trait = False
 
-        if dad_gene == 1:
-            dad_prob = 0.5
-        elif dad_gene == 2:
-            dad_prob = 1 - PROBS["mutation"]
+        mother = people[person]["mother"]
+        father = people[person]["father"]
+
+        if (people[person]["mother"] is None 
+            and people[person]["father"] is None):
+            prob *= PROBS["gene"][num_genes]
+            prob *= PROBS["trait"][num_genes][has_trait]
         else:
-            dad_prob = PROBS["mutation"]
+            if mother in one_gene:
+                mum_gene = 1
+            elif mother in two_genes:
+                mum_gene = 2
+            else:
+                mum_gene = 0
+
+            if father in one_gene:
+                dad_gene = 1
+            elif father in two_genes:
+                dad_gene = 2
+            else:
+                dad_gene = 0
             
-        if num_genes == 2:
-            comb_prob = mum_prob * dad_prob
-        elif num_genes == 1:
-            comb_prob = (1-mum_prob) * dad_prob + mum_prob * (1-dad_prob)
-        else:
-            comb_prob = (1-mum_prob) * (1-dad_prob)
+            if mum_gene == 1:
+                mum_prob = 0.5
+            elif mum_gene == 2:
+                mum_prob = 1 - PROBS["mutation"]
+            else:
+                mum_prob = PROBS["mutation"]
 
-        prob *= comb_prob * PROBS["trait"][num_genes][has_trait]
+            if dad_gene == 1:
+                dad_prob = 0.5
+            elif dad_gene == 2:
+                dad_prob = 1 - PROBS["mutation"]
+            else:
+                dad_prob = PROBS["mutation"]
+                
+            if num_genes == 2:
+                comb_prob = mum_prob * dad_prob
+            elif num_genes == 1:
+                comb_prob = (1-mum_prob) * dad_prob + mum_prob * (1-dad_prob)
+            else:
+                comb_prob = (1-mum_prob) * (1-dad_prob)
+
+            prob *= comb_prob * PROBS["trait"][num_genes][has_trait]
 
     return prob
 
@@ -279,3 +279,4 @@ def normalize(probabilities):
 
 if __name__ == "__main__":
     main()
+
