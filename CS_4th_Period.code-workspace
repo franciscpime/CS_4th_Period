@@ -3,10 +3,6 @@
 		{
 			"name": "CS_4th_Period",
 			"path": "."
-		},
-		{
-			"name": "crossword",
-			"path": "../../crossword"
 		}
 	],
 	"settings": {}
