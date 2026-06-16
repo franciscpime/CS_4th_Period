@@ -22,8 +22,8 @@ This repository contains all the Computer Science assignments completed during P
 
 ## Author
 
-Francisco Ponte Pimentel  
-Student No. 5708915  
-NHL Stenden University of Applied Sciences  
+Francisco Pimentel
+Student No. 5708915
+NHL Stenden University of Applied Sciences
 francisco.ponte.pimentel@nhlstenden.student.com
 
