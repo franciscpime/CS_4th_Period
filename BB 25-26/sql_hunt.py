@@ -17,8 +17,6 @@ JOIN artists ON albums.ArtistId = artists.ArtistId
 JOIN genres ON tracks.GenreId = genres.GenreId
 WHERE genres.Name = 'Jazz'
 ORDER BY artists.Name ASC
-
-
 """
 
 # ASSIGNMENT 2
@@ -34,8 +32,6 @@ WHERE genres.Name = 'Jazz'
 GROUP BY artists.ArtistId
 ORDER BY num_tracks DESC
 LIMIT 5
-
-
 """
 
 try:
